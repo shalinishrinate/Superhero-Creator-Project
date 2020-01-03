@@ -62,21 +62,27 @@ namespace Superhero_Creator.Controllers
         public ActionResult Edit(int id)
         {
             Superhero superhero = new Superhero();
-            superhero = context.Superheroes.Where(s => s.id == id).Select(s => s).SingleOrDefault();
+            superhero = context.Superheroes.Where(s => s.id == id).FirstOrDefault();
             return View(superhero);
             
         }
 
         // POST: Superhero/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, Superhero superhero)
         {
             try
             {
                 // TODO: Add update logic here
-                ApplicationDbContext db = new ApplicationDbContext();
-               // var Superhero = db.Superheroes.Where(s => s);
-
+                
+               Superhero editedSuperhero = context.Superheroes.Where(s => s.id == id).FirstOrDefault();
+                editedSuperhero.id = superhero.id;
+                editedSuperhero.superheroName = superhero.superheroName;
+                editedSuperhero.superheroAlterEgo = superhero.superheroAlterEgo;
+                editedSuperhero.primarySuperheroAbility = superhero.primarySuperheroAbility;
+                editedSuperhero.secondarySuperheroAbility = superhero.secondarySuperheroAbility;
+                editedSuperhero.catchPhrase = superhero.catchPhrase;
+                context.SaveChanges();
                 return RedirectToAction("Index");
             }
             catch
