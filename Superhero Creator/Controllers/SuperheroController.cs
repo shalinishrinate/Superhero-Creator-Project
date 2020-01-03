@@ -30,8 +30,8 @@ namespace Superhero_Creator.Controllers
         public ActionResult Details(int id)
         {
             Superhero superhero = new Superhero();
-            superhero = context.Superheroes.Where(s => s.id == id).Select(s => s).SingleOrDefault();
-            return View();
+            superhero = context.Superheroes.Where(s => s.id == id).FirstOrDefault();
+            return View(superhero);
         }
 
         // GET: Superhero/Create
