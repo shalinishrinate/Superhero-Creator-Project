@@ -9,10 +9,21 @@ namespace Superhero_Creator.Controllers
 {
     public class SuperheroController : Controller
     {
+        ApplicationDbContext db;
+
+        public SuperheroController()
+        {
+            db = new ApplicationDbContext();
+        }
+
         // GET: Superhero
         public ActionResult Index()
         {
-            return View();
+            List<Superhero> superheroes = db.Superheroes.ToList();
+            //var allHeroes = 1;
+            // getting the heroes
+            // send them to view
+            return View(superheroes);
         }
 
         // GET: Superhero/Details/5
@@ -35,7 +46,8 @@ namespace Superhero_Creator.Controllers
             try
             {
                 // TODO: Add insert logic here
-
+                db.Superheroes.Add(superhero);
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
             catch
@@ -47,7 +59,10 @@ namespace Superhero_Creator.Controllers
         // GET: Superhero/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            Superhero superhero = new Superhero();
+            superhero = db.Superheroes.Where(s => s.id == id).Select(s => s).SingleOrDefault();
+            return View(superhero);
+            
         }
 
         // POST: Superhero/Edit/5
@@ -57,6 +72,8 @@ namespace Superhero_Creator.Controllers
             try
             {
                 // TODO: Add update logic here
+                ApplicationDbContext db = new ApplicationDbContext();
+               // var Superhero = db.Superheroes.Where(s => s);
 
                 return RedirectToAction("Index");
             }
