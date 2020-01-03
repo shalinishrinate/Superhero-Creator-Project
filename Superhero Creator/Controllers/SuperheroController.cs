@@ -9,17 +9,17 @@ namespace Superhero_Creator.Controllers
 {
     public class SuperheroController : Controller
     {
-        ApplicationDbContext db;
+        ApplicationDbContext context;
 
         public SuperheroController()
         {
-            db = new ApplicationDbContext();
+            context = new ApplicationDbContext();
         }
 
         // GET: Superhero
         public ActionResult Index()
         {
-            List<Superhero> superheroes = db.Superheroes.ToList();
+           var superheroes = context.Superheroes.ToList();
             //var allHeroes = 1;
             // getting the heroes
             // send them to view
@@ -29,6 +29,8 @@ namespace Superhero_Creator.Controllers
         // GET: Superhero/Details/5
         public ActionResult Details(int id)
         {
+            Superhero superhero = new Superhero();
+            superhero = context.Superheroes.Where(s => s.id == id).Select(s => s).SingleOrDefault();
             return View();
         }
 
@@ -46,8 +48,8 @@ namespace Superhero_Creator.Controllers
             try
             {
                 // TODO: Add insert logic here
-                db.Superheroes.Add(superhero);
-                db.SaveChanges();
+                context.Superheroes.Add(superhero);
+                context.SaveChanges();
                 return RedirectToAction("Index");
             }
             catch
@@ -60,7 +62,7 @@ namespace Superhero_Creator.Controllers
         public ActionResult Edit(int id)
         {
             Superhero superhero = new Superhero();
-            superhero = db.Superheroes.Where(s => s.id == id).Select(s => s).SingleOrDefault();
+            superhero = context.Superheroes.Where(s => s.id == id).Select(s => s).SingleOrDefault();
             return View(superhero);
             
         }
